@@ -3,8 +3,11 @@ package com.mendel.code.challenge.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.DefaultRowSorter;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +33,23 @@ public class Transactions {
 	private TransactionCCH add(@PathVariable Long transaction_id) {
 		
 		TransactionCCH t= new TransactionCCH();
-		t.setIdTransaction(transaction_id);
+		t.setIdTransaction(transaction_id);		
+		transactionsList.add(t);
 		
 		return t;
+	}
+	
+	/**
+	 * 
+	 * @param transaction_id
+	 * @return
+	 */
+	@PostMapping(value = "/add")
+	private TransactionCCH add(@RequestBody TransactionCCH cch) {
+				
+		transactionsList.add(cch);
+		
+		return cch;
 	}
 	
 	/**
@@ -40,8 +57,8 @@ public class Transactions {
 	 * @param type
 	 * @return
 	 */
-	@GetMapping(value = "/type/{$type}")
-	private ArrayList<Long> getTransactionByType(@RequestBody String type) {
+	@GetMapping(value = "/type/{type}")
+	private ArrayList<Long> getTransactionByType(@PathVariable String type) {
 		
 		ArrayList<Long> transactionByTypeList= new ArrayList<Long>();
 		for (TransactionCCH transactionCCH : transactionsList) {
@@ -58,18 +75,68 @@ public class Transactions {
 	 * @param transaction_id
 	 * @return
 	 */
-	@GetMapping(value = "/sum/{$transaction_id}")
-	private SumWrapper sum(@RequestBody Long transaction_id) {
+	@GetMapping(value = "/sum/{transaction_id}")
+	private SumWrapper sum(@PathVariable Long transaction_id) {
 		double d=0; 
 		for (TransactionCCH transactionCCH : transactionsList) {
 			if (transactionCCH.getParent_id()==transaction_id) {
 				d=d+transactionCCH.getAmount();
 			}
-		}		
+		}
+		if (d==0) {
+			throw new RuntimeException("No se encontro ningun registro");
+		}
 		 
 		return new SumWrapper(d);
 	}
 
+	/**
+	 * 
+	 * @param transaction_id
+	 * @return
+	 */
+	@GetMapping(value = "/prueba")
+	private String prueba() {
+		
+		return "Hola mundo";
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@GetMapping(value = "/listar")
+	private ArrayList<TransactionCCH> listar() {
+		
+		return transactionsList;
+	}
+	
+	/**
+	 * 
+	 * @param transaction_id
+	 * @return
+	 */
+	@GetMapping(value = "/carga")
+	private ArrayList<TransactionCCH> cargar() {
+		
+		TransactionCCH cch= new TransactionCCH();
+		TransactionCCH cch1= new TransactionCCH(2L,"CAR",200,1L);
+		TransactionCCH cch2= new TransactionCCH(3L,"CAR",350,1L);
+		TransactionCCH cch3= new TransactionCCH(4L,"CAR",100,1L);
+		TransactionCCH cch4= new TransactionCCH(5L,"CAR",800,1L);
+		cch.setAmount(200);
+		cch.setIdTransaction(1L);
+		cch.setType("CAR");
+		
+		transactionsList.add(cch);
+		transactionsList.add(cch1);
+		transactionsList.add(cch2);
+		transactionsList.add(cch3);
+		transactionsList.add(cch4);
+		return transactionsList;
+	}
+	
+	
 	/**
 	 * 	
 	 * @param transaction

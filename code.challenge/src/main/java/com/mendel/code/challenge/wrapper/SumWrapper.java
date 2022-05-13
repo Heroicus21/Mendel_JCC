@@ -20,7 +20,5 @@ public class SumWrapper {
 	public void setSum(double sum) {
 		this.sum = sum;
 	}
-	
-	
 
 }
