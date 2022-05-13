@@ -27,7 +27,7 @@ public class Transactions {
 	/**
 	 * 
 	 * @param transaction_id
-	 * @return
+	 * @return TransactionCCH
 	 */
 	@PutMapping(value = "/{transaction_id}")
 	private TransactionCCH add(@PathVariable Long transaction_id) {
@@ -41,8 +41,8 @@ public class Transactions {
 	
 	/**
 	 * 
-	 * @param transaction_id
-	 * @return
+	 * @param TransactionCCH
+	 * @return TransactionCCH
 	 */
 	@PostMapping(value = "/add")
 	private TransactionCCH add(@RequestBody TransactionCCH cch) {
@@ -55,7 +55,7 @@ public class Transactions {
 	/**
 	 * 
 	 * @param type
-	 * @return
+	 * @return ArrayList<Long>
 	 */
 	@GetMapping(value = "/type/{type}")
 	private ArrayList<Long> getTransactionByType(@PathVariable String type) {
@@ -73,7 +73,7 @@ public class Transactions {
 	/**
 	 * 
 	 * @param transaction_id
-	 * @return
+	 * @return SumWrapper
 	 */
 	@GetMapping(value = "/sum/{transaction_id}")
 	private SumWrapper sum(@PathVariable Long transaction_id) {
@@ -93,7 +93,7 @@ public class Transactions {
 	/**
 	 * 
 	 * @param transaction_id
-	 * @return
+	 * @return String
 	 */
 	@GetMapping(value = "/prueba")
 	private String prueba() {
@@ -103,7 +103,7 @@ public class Transactions {
 	
 	/**
 	 * 
-	 * @return
+	 * @return ArrayList<TransactionCCH>
 	 */
 	@GetMapping(value = "/listar")
 	private ArrayList<TransactionCCH> listar() {
@@ -113,8 +113,8 @@ public class Transactions {
 	
 	/**
 	 * 
-	 * @param transaction_id
-	 * @return
+	 * @param 
+	 * @return ArrayList<TransactionCCH>
 	 */
 	@GetMapping(value = "/carga")
 	private ArrayList<TransactionCCH> cargar() {
@@ -136,19 +136,4 @@ public class Transactions {
 		return transactionsList;
 	}
 	
-	
-	/**
-	 * 	
-	 * @param transaction
-	 * @return
-	 
-		@PutMapping(value = "/addTransaction")
-		private TransactionCCH add(@RequestBody TransactionCCH transaction) {
-			
-			TransactionCCH t= new TransactionCCH(transaction);
-			transactionsList.add(t);
-			
-			return t;
-		}
-	*/
 }
